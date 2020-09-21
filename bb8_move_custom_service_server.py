@@ -1,35 +1,71 @@
 #! /usr/bin/env python
 
 import rospy
+from std_srvs.srv import Empty, EmptyResponse # you import the service message python classes generated from Empty.srv.
 from services_quiz.srv import BB8CustomServiceMessage, BB8CustomServiceMessageResponse
-from move_bb8 import MoveBB8
-
-"""
-# BB8CustomServiceMessage
-float64 side       # The distance of each side of the square
-int32 repetitions    # The number of times BB-8 has to execute the square movement when the service is called
----
-bool success         # Did it achieve it?
-"""
+from geometry_msgs.msg import Twist
+import time
 
 def my_callback(request):
+    
     rospy.loginfo("The Service move_bb8_in_square_custom has been called")
-
-    movebb8_object = MoveBB8()
-
-    # We need to add because if we ask 0 repetitions means to execute once, not zero times.
-    repetitions_of_square = request.repetitions + 1
-    new_side = request.side
-    for i in range(repetitions_of_square):
-        rospy.loginfo("Start Movement with side = "+str(new_side)+"Repetition = "+str(i))
-        movebb8_object.move_square(side=new_side)
-
-    rospy.loginfo("Finished service move_bb8_in_square that was called called")
+    
+    radius = request.side
+    for i in range(request.repetitions):
+        rospy.loginfo("Moving forward...")
+        move_circle.linear.x = 0.2
+        move_circle.angular.z = 0
+        my_pub.publish(move_circle)
+        time.sleep(radius)
+        rospy.loginfo("Rotating...")
+        move_circle.linear.x = 0
+        move_circle.angular.z = 0.2
+        my_pub.publish(move_circle)
+        time.sleep(4)
+        rospy.loginfo("Moving forward...")
+        move_circle.linear.x = 0.2
+        move_circle.angular.z = 0
+        my_pub.publish(move_circle)
+        time.sleep(radius)
+        rospy.loginfo("Rotating...")
+        move_circle.linear.x = 0
+        move_circle.angular.z = 0.2
+        my_pub.publish(move_circle)
+        time.sleep(4)
+        rospy.loginfo("Moving forward...")
+        move_circle.linear.x = 0.2
+        move_circle.angular.z = 0
+        my_pub.publish(move_circle)
+        time.sleep(radius)
+        rospy.loginfo("Rotating...")
+        move_circle.linear.x = 0
+        move_circle.angular.z = 0.2
+        my_pub.publish(move_circle)
+        time.sleep(4)
+        rospy.loginfo("Moving forward...")
+        move_circle.linear.x = 0.2
+        move_circle.angular.z = 0
+        my_pub.publish(move_circle)
+        time.sleep(radius)
+        rospy.loginfo("Rotating...")
+        move_circle.linear.x = 0
+        move_circle.angular.z = 0.2
+        my_pub.publish(move_circle)
+        time.sleep(4)
+        rospy.loginfo("Stopping...")
+        move_circle.linear.x = 0
+        move_circle.angular.z = 0
+        my_pub.publish(move_circle)
+        time.sleep(2)
+        
+    rospy.loginfo("Finished service move_bb8_in_square_custom")
     response = BB8CustomServiceMessageResponse()
     response.success = True
-    return response
+    return response # the service Response class, in this case EmptyResponse
 
-rospy.init_node('service_move_bb8_in_square_custom_server')
-my_service = rospy.Service('/move_bb8_in_square_custom', BB8CustomServiceMessage , my_callback) # create the Service called move_bb8_in_square with the defined callback
+rospy.init_node('service_move_bb8_in_square_server') 
+my_service = rospy.Service('/move_bb8_in_square_custom', BB8CustomServiceMessage , my_callback) # create the Service called move_bb8_in_circle with the defined callback
+my_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
+move_circle = Twist()
 rospy.loginfo("Service /move_bb8_in_square_custom Ready")
 rospy.spin() # mantain the service open.
