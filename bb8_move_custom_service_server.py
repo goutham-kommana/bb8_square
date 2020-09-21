@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 import rospy
-from std_srvs.srv import Empty, EmptyResponse # you import the service message python classes generated from Empty.srv.
+from std_srvs.srv import Empty, EmptyResponse
 from services_quiz.srv import BB8CustomServiceMessage, BB8CustomServiceMessageResponse
 from geometry_msgs.msg import Twist
 import time
@@ -64,7 +64,7 @@ def my_callback(request):
     return response # the service Response class, in this case EmptyResponse
 
 rospy.init_node('service_move_bb8_in_square_server') 
-my_service = rospy.Service('/move_bb8_in_square_custom', BB8CustomServiceMessage , my_callback) # create the Service called move_bb8_in_circle with the defined callback
+my_service = rospy.Service('/move_bb8_in_square_custom', BB8CustomServiceMessage , my_callback) 
 my_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
 move_circle = Twist()
 rospy.loginfo("Service /move_bb8_in_square_custom Ready")
